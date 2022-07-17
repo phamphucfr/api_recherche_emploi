@@ -1,8 +1,9 @@
 <?php
 
-class jobManagerController
+class JobController
 {
-    public function __construct(private jobManager $jobManager)
+
+    public function __construct(JobManager $jobManager)
     {
     }
     

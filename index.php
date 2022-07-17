@@ -20,9 +20,9 @@ if ($parts[1] != "products") {
 
 $id = $parts[2] ?? null;
 
-$gateway = new ProductGateway($database);
+$jobManager = new JobManager;
 
-$controller = new ProductController($gateway);
+$controller = new JobController($jobManager);
 
 $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
 

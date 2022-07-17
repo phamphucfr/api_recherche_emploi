@@ -2,7 +2,7 @@
 
 require_once("../tools/dbConnexion.php");
 
-class jobManager
+class JobManager
 {
     private PDO $cnx;
     
