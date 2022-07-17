@@ -1,6 +1,6 @@
 <?php
 
-require_once("../tools/dbConnexion.php");
+require_once(realpath(__DIR__ . '/..').'../tools/dbConnexion.php');
 
 class JobManager
 {

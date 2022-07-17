@@ -13,12 +13,16 @@ header("Content-type: application/json; charset=UTF-8");
 
 $parts = explode("/", $_SERVER["REQUEST_URI"]);
 
-if ($parts[1] != "products") {
+
+if ($parts[1] != "rechercheemploi" || $parts[2] != "jobs") {
     http_response_code(404);
     exit;
 }
+else{
+    var_dump($parts);
+}
 
-$id = $parts[2] ?? null;
+$id = $parts[3] ?? null;
 
 $jobManager = new JobManager;
 
