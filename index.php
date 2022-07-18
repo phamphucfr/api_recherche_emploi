@@ -19,15 +19,14 @@ if ($parts[1] != "rechercheemploi" || $parts[2] != "jobs") {
     exit;
 }
 else{
-    var_dump($parts);
+    $id = $parts[3] ?? null;
+
+    $jobManager = new JobManager;
+
+    $controller = new JobController($jobManager);
+
+    $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
 }
 
-$id = $parts[3] ?? null;
-
-$jobManager = new JobManager;
-
-$controller = new JobController($jobManager);
-
-$controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
 
 ?>
