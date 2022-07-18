@@ -14,7 +14,7 @@ class JobManager
     public function getAll(): array
     {
         $sql = "SELECT *
-                FROM product";
+                FROM job";
                 
         $stmt = $this->cnx->query($sql);
         
@@ -22,7 +22,7 @@ class JobManager
         
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             
-            $row["is_available"] = (bool) $row["is_available"];
+            $row["applied"] = (bool) $row["applied"];
             
             $data[] = $row;
         }
@@ -32,14 +32,14 @@ class JobManager
     
     public function create(array $data): string
     {
-        $sql = "INSERT INTO product (name, size, is_available)
-                VALUES (:name, :size, :is_available)";
+        $sql = "INSERT INTO job (reference, detail, applied)
+                VALUES (:reference, :detail, :applied)";
                 
         $stmt = $this->cnx->prepare($sql);
         
-        $stmt->bindValue(":name", $data["name"], PDO::PARAM_STR);
-        $stmt->bindValue(":size", $data["size"] ?? 0, PDO::PARAM_INT);
-        $stmt->bindValue(":is_available", (bool) ($data["is_available"] ?? false), PDO::PARAM_BOOL);
+        $stmt->bindValue(":reference", $data["reference"], PDO::PARAM_STR);
+        $stmt->bindValue(":detail", $data["detail"] ?? 0, PDO::PARAM_INT);
+        $stmt->bindValue(":applied", (bool) ($data["applied"] ?? false), PDO::PARAM_BOOL);
         
         $stmt->execute();
         
@@ -49,7 +49,7 @@ class JobManager
     public function get(string $id): array
     {
         $sql = "SELECT *
-                FROM product
+                FROM job
                 WHERE id = :id";
                 
         $stmt = $this->cnx->prepare($sql);
@@ -61,7 +61,7 @@ class JobManager
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($data !== false) {
-            $data["is_available"] = (bool) $data["is_available"];
+            $data["applied"] = (bool) $data["applied"];
         }
         
         return $data;
@@ -69,15 +69,15 @@ class JobManager
     
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE product
-                SET name = :name, size = :size, is_available = :is_available
+        $sql = "UPDATE job
+                SET reference = :reference, detail = :detail, applied = :applied
                 WHERE id = :id";
                 
         $stmt = $this->cnx->prepare($sql);
         
-        $stmt->bindValue(":name", $new["name"] ?? $current["name"], PDO::PARAM_STR);
-        $stmt->bindValue(":size", $new["size"] ?? $current["size"], PDO::PARAM_INT);
-        $stmt->bindValue(":is_available", $new["is_available"] ?? $current["is_available"], PDO::PARAM_BOOL);
+        $stmt->bindValue(":reference", $new["reference"] ?? $current["reference"], PDO::PARAM_STR);
+        $stmt->bindValue(":detail", $new["detail"] ?? $current["detail"], PDO::PARAM_INT);
+        $stmt->bindValue(":applied", $new["applied"] ?? $current["applied"], PDO::PARAM_BOOL);
         
         $stmt->bindValue(":id", $current["id"], PDO::PARAM_INT);
         
@@ -88,7 +88,7 @@ class JobManager
     
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM product
+        $sql = "DELETE FROM job
                 WHERE id = :id";
                 
         $stmt = $this->cnx->prepare($sql);

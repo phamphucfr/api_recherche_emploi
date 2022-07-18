@@ -106,13 +106,13 @@ class JobController
     {
         $errors = [];
         
-        if ($is_new && empty($data["name"])) {
-            $errors[] = "name is required";
+        if ($is_new && empty($data["reference"])) {
+            $errors[] = "La référence d'offre d'emploi est exigée";
         }
         
-        if (array_key_exists("size", $data)) {
-            if (filter_var($data["size"], FILTER_VALIDATE_INT) === false) {
-                $errors[] = "size must be an integer";
+        if (array_key_exists("detail", $data)) {
+            if (filter_var($data["detail"], FILTER_VALIDATE_INT) === false) {
+                $errors[] = "";
             }
         }
         
