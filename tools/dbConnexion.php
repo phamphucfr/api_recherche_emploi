@@ -16,5 +16,9 @@ class dbConnexion {
         ]
     );
     }
+
+    static function checkApiKey(string $key){
+        return (db::API_KEY === $key);
+    }
 }
 ?>
