@@ -18,9 +18,11 @@ if (count($parts) < 2) {
     exit;
 }
 else{
-    $id= null; $name=null; $reference=null;
+    $id= null; 
 
-    if($parts[2]){
+    var_dump($parts);
+
+    if(count($parts) > 2){
         switch ($parts[2]) {
             case "id":
                 $id = $parts[3] ?? null;
@@ -32,28 +34,32 @@ else{
             }
     }
     
-    if($part[1]){
+    if(count($parts) > 1){
         switch ($parts[1]) {
             case "company":
-                $companyManager = new CompanyManager;
-
-                $controller = new JobController($jobManager);
-            
+                $manager = new CompanyManager;
+                $controller = new CompanyController($manager);            
                 $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
                 break;
             case "competence":
-                $name = $parts[3] ?? null;           
-                break; 
-            case "experience":
-                $reference = $parts[3] ?? null;             
-                break;   
-            case "job":
-                $jobManager = new JobManager;
-                $controller = new JobController($jobManager);            
+                $manager = new CompetenceManager;
+                $controller = new CompetenceController($manager);            
                 $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);         
                 break; 
+            case "experience":
+                $manager = new ExperienceManager;
+                $controller = new ExperienceController($manager);            
+                $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);            
+                break;   
+            case "job":
+                $manager = new JobManager;
+                $controller = new JobController($manager);            
+                $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);       
+                break; 
             case "plateform":
-                $reference = $parts[3] ?? null;             
+                $manager = new PlateformManager;
+                $controller = new PlateformController($manager);            
+                $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);             
                 break;                             
             default:
                 http_response_code(404);
