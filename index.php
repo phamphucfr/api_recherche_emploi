@@ -9,23 +9,59 @@ spl_autoload_register(function ($class) {
 set_error_handler("ErrorHandler::handleError");
 set_exception_handler("ErrorHandler::handleException");
 
-header("Content-type: application/json; charset=UTF-8");
+// header("Content-type:application/json; charset=UTF-8");
 
 $parts = explode("/", $_SERVER["REQUEST_URI"]);
 
-
-if ($parts[1] != "rechercheemploi" || $parts[2] != "jobs") {
+if (count($parts) < 2) {
     http_response_code(404);
     exit;
 }
 else{
-    $id = $parts[3] ?? null;
+    $id= null; $name=null; $reference=null;
 
-    $jobManager = new JobManager;
+    if($parts[2]){
+        switch ($parts[2]) {
+            case "id":
+                $id = $parts[3] ?? null;
+                break;           
+            default:
+                http_response_code(404);
+                exit;
+                break;
+            }
+    }
+    
+    if($part[1]){
+        switch ($parts[1]) {
+            case "company":
+                $companyManager = new CompanyManager;
 
-    $controller = new JobController($jobManager);
-
-    $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
+                $controller = new JobController($jobManager);
+            
+                $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
+                break;
+            case "competence":
+                $name = $parts[3] ?? null;           
+                break; 
+            case "experience":
+                $reference = $parts[3] ?? null;             
+                break;   
+            case "job":
+                $jobManager = new JobManager;
+                $controller = new JobController($jobManager);            
+                $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);         
+                break; 
+            case "plateform":
+                $reference = $parts[3] ?? null;             
+                break;                             
+            default:
+                http_response_code(404);
+                exit;
+                break;
+            }
+    }
+    
 }
 
 
